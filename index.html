@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModuLab.app - Dein modulares Homelab-Dashboard</title>
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font für modernes UI-Feeling -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            cyan: '#0084a8',
+                            darkBlue: '#1f2d3d',
+                            accent: '#00b4d8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050507;
+            overflow-x: hidden;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 50px -10px rgba(0, 132, 168, 0.25);
+        }
+        .glass-panel {
+            background: rgba(18, 18, 24, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="text-zinc-300 font-sans selection:bg-brand-cyan/30 selection:text-white">
+
+    <!-- Grid-Hintergrund für Tech-Look -->
+    <div class="fixed inset-0 grid-bg z-0 pointer-events-none"></div>
+    <div class="fixed top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-brand-cyan/10 blur-[150px] z-0 pointer-events-none"></div>
+    <div class="fixed bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-brand-cyan/5 blur-[150px] z-0 pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-50 glass-panel border-b border-zinc-800/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- SVG Logo (Vergrößert für maximale Sichtbarkeit und Branding-Präsenz) -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120" class="w-72 md:w-96 h-auto">
+                    <g transform="translate(10, 0)">
+                        <polygon points="95,25 117,37 117,63 95,75 73,63 73,37" fill="none" stroke="#005f7a" stroke-width="2" opacity="0.5"/>
+                        <polygon points="35,65 57,77 57,103 35,115 13,103 13,77" fill="#1f2d3d" />
+                        <polygon points="65,40 87,52 87,78 65,90 43,78 43,52" fill="#0084a8" />
+                        <path d="M57,58 L73,58 L73,70 C73,76 65,80 65,80 C65,80 57,76 57,70 Z" fill="none" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M65,74 L65,63 M61,67 L65,63 L69,67" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                    <text x="145" y="68" font-family="'Segoe UI', Roboto, sans-serif" font-size="42" font-weight="700" fill="#ffffff" letter-spacing="-0.5">Modu<tspan fill="#0084a8">Lab</tspan></text>
+                    <text x="147" y="92" font-family="'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#a0a0a0" letter-spacing="4">A SECURE INTRANET HUB</text>
+                </svg>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#features" class="hover:text-white transition-colors text-zinc-400">Features</a>
+                <a href="#architecture" class="hover:text-white transition-colors text-zinc-400">Sicherheit</a>
+                <a href="#roadmap" class="hover:text-white transition-colors text-zinc-400">Roadmap</a>
+                <a href="#faq" class="hover:text-white transition-colors text-zinc-400">FAQ</a>
+                <a href="https://github.com/modulab-project" target="_blank" class="px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-brand-cyan/50 text-white transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pt-16 md:pt-24 pb-20">
+        <div class="text-center max-w-3xl mx-auto">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan text-xs font-semibold uppercase tracking-wider mb-6">
+                <!-- Pulsierender grüner "Live-Entwicklung" Dot -->
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                In aktiver Entwicklung | Open Source (AGPLv3)
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
+                Das ultimative <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-cyan-400">Kontrollzentrum</span> für dein Homelab
+            </h1>
+            <p class="text-lg text-zinc-400 mb-8 leading-relaxed">
+                ModuLab.app trennt den hochperformanten Core von sandboxed GitHub-Modulen. Vollständig konfiguriert über eine moderne Weboberfläche, geschützt durch AES-256-Verschlüsselung und nahtlos integriert mit deinem OIDC-Provider.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://github.com/modulab-project" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-cyan hover:bg-brand-accent text-white font-bold transition-all shadow-lg hover:shadow-brand-cyan/20 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    Projekt auf GitHub folgen
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Key Features Section (6-Säulen-Grid) -->
+    <section id="features" class="py-24 border-t border-zinc-900 bg-zinc-950/50 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">Ein moderner Kern für flexible Netze</h2>
+                <p class="text-zinc-400">Erfahre, warum ModuLab weit über eine einfache Link-Sammlung hinausgeht.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-xl mb-6">🔑</div>
+                    <h3 class="text-lg font-bold text-white mb-2">OIDC SSO & Dynamic Prefix</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Nutze deinen bevorzugten IdP (PocketID, Keycloak, Authentik, Authelia). Unser Dynamic Prefix Gate kombiniert dein Präfix automatisch mit den Suffixen <code>_Admin</code> und <code>_User</code> für eine strikte Einlasskontrolle am Hard Gate.
+                    </p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-xl mb-6">👥</div>
+                    <h3 class="text-lg font-bold text-white mb-2">JIT Profiling & Warteschleife</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Automatische Profil-Synchronisation beim Erst-Login (Name, Vorname, Nachname, E-Mail, Avatar). Neue berechtigte User landen in einer Onboarding-Warteschleife, bis sie von Admins freigeschaltet und Standorten zugewiesen werden.
+                    </p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-xl mb-6">🌐</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Multi-Standort-Scoping</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Verwalte physisch getrennte Netze (Zuhause, VPS/Cloud, Backup-Hosts) in einer zentralen Instanz. Der Core erzwingt auf Datenbankebene eine strikte Isolation der Widget-Daten anhand der zugewiesenen Standort-ID.
+                    </p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="p-8 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-xl mb-6">📦</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Modul Place & Soft-Reload</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Installiere Widgets und Launcher direkt aus öffentlichen oder privaten GitHub-Repositories (via personalisierte PATs) mit nur einem Klick. Module werden im laufenden Betrieb ohne Container-Neustart dynamisch geladen.
+                    </p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="p-8 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-xl mb-6">🔔</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Echtzeit-SSE & Mail-Queue</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Erhalte Push-Benachrichtigungen über Ereignisse (z. B. neue Logins oder unberechtigte Zugriffe) in Echtzeit via WebSockets/SSE, gekoppelt mit einer asynchronen, Valkey-gestützten Mail-Warteschlange.
+                    </p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="p-8 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-xl mb-6">⚡</div>
+                    <h3 class="text-lg font-bold text-white mb-2">High-Performance API-Cache</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        Unser Valkey In-Memory Cache agiert als unschlagbarer Schutzschild vor GitHub-Rate-Limits und sorgt für eine extrem geringe Latenz bei jedem Seitenaufruf – ideal für schwächere Hardware im Homelab.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Breakdown Section -->
+    <section id="architecture" class="py-24 border-t border-zinc-900 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-xs font-bold text-brand-cyan uppercase tracking-wider">Zero-Trust Homelab</span>
+                    <h2 class="text-3xl font-bold text-white mt-2 mb-6">Verschlüsselung auf Anwendungsebene & Isolation</h2>
+                    <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+                        Datensouveränität fängt beim Fundament an. ModuLab speichert alle sensitiven Daten (Access Tokens, Passwörter, API-Keys) standardmäßig über eine symmetrische <strong>AES-256-GCM Verschlüsselung</strong>. Ohne den Hauptschlüssel in der lokalen <code>.env</code> bleibt deine relationale PostgreSQL-Datenbank unlesbarer Zeichensalat.
+                    </p>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex gap-3">
+                            <span class="text-brand-cyan mt-1">✓</span>
+                            <p class="text-sm text-zinc-400"><strong>Modul-Sandboxing:</strong> Fremder Code von Drittanbieter-Modulen wird in einer isolierten Sandbox ausgeführt und hat keinen Zugriff auf die sensiblen Host-Umgebungsvariablen.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-brand-cyan mt-1">✓</span>
+                            <p class="text-sm text-zinc-400"><strong>Netzwerk-Splitting:</strong> Der Docker-Stack trennt den Proxy-Frontend-Traffic strikt vom Backend-Netzwerk. PostgreSQL und Valkey besitzen keine Ports nach außen.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-brand-cyan mt-1">✓</span>
+                            <p class="text-sm text-zinc-400"><strong>Container-Härtung:</strong> Der Container-Core läuft standardmäßig unprivilegiert als Non-Root-User mit einem Read-Only-Dateisystem.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visueller Sicherheits-Flowchart Block -->
+                <div class="p-8 rounded-2xl glass-panel border border-zinc-800 space-y-6">
+                    <h3 class="text-lg font-bold text-white">Sicherheits-Pipeline & Datenfluss</h3>
+                    
+                    <!-- Flowchart Step 1 -->
+                    <div class="flex items-center gap-4 p-3 bg-zinc-950 rounded-xl border border-zinc-900">
+                        <span class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-sm font-mono text-zinc-400">1</span>
+                        <div class="text-xs">
+                            <h4 class="font-bold text-white uppercase tracking-wider">Reverse Proxy TLS</h4>
+                            <p class="text-zinc-500">HTTPS-Zwang & Header-Validierung über Nginx/Traefik</p>
+                        </div>
+                    </div>
+                    <!-- Flowchart Down Arrow -->
+                    <div class="text-center text-xs text-brand-cyan font-bold opacity-40">↓</div>
+                    <!-- Flowchart Step 2 -->
+                    <div class="flex items-center gap-4 p-3 bg-zinc-950 rounded-xl border border-zinc-900">
+                        <span class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-sm font-mono text-zinc-400">2</span>
+                        <div class="text-xs">
+                            <h4 class="font-bold text-white uppercase tracking-wider">Dynamic Prefix Gate</h4>
+                            <p class="text-zinc-500">OIDC-Authentifizierung & Verifikation der Admin/User Whitelist</p>
+                        </div>
+                    </div>
+                    <!-- Flowchart Down Arrow -->
+                    <div class="text-center text-xs text-brand-cyan font-bold opacity-40">↓</div>
+                    <!-- Flowchart Step 3 -->
+                    <div class="flex items-center gap-4 p-3 bg-zinc-950 rounded-xl border border-zinc-900">
+                        <span class="w-8 h-8 rounded-lg bg-brand-cyan/20 border border-brand-cyan/30 flex items-center justify-center text-sm font-mono text-brand-cyan font-bold">3</span>
+                        <div class="text-xs">
+                            <h4 class="font-bold text-brand-cyan uppercase tracking-wider">AES-256-GCM Engine</h4>
+                            <p class="text-zinc-500">Verschlüsselung sensitiver Configs & persistenter Moduleinträge</p>
+                        </div>
+                    </div>
+                    <!-- Flowchart Down Arrow -->
+                    <div class="text-center text-xs text-brand-cyan font-bold opacity-40">↓</div>
+                    <!-- Flowchart Step 4 -->
+                    <div class="flex items-center gap-4 p-3 bg-zinc-950 rounded-xl border border-zinc-900">
+                        <span class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-sm font-mono text-zinc-400">4</span>
+                        <div class="text-xs">
+                            <h4 class="font-bold text-white uppercase tracking-wider">PostgreSQL & Valkey Volume</h4>
+                            <p class="text-zinc-500">Vollständig isolierte, persistente Speicherung im Backend-Netzwerk</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Roadmap (Timeline) -->
+    <section id="roadmap" class="py-24 border-t border-zinc-900 bg-zinc-950/20 relative z-10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold text-brand-cyan uppercase tracking-wider">Projektfortschritt</span>
+                <h2 class="text-3xl font-bold text-white mt-2">Unsere Roadmap zu Version 1.0</h2>
+                <p class="text-zinc-400 text-sm mt-3">Verfolge den aktuellen Entwicklungsstatus der ModuLab Core-Architektur.</p>
+            </div>
+
+            <!-- Timeline Elements -->
+            <div class="space-y-8 relative before:absolute before:inset-0 before:left-4 md:before:left-1/2 before:w-0.5 before:bg-zinc-800">
+                
+                <!-- Step 1: In Progress -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-12 md:even:flex-row-reverse">
+                    <!-- Timeline Dot with Ping Animation -->
+                    <div class="absolute left-4 md:left-1/2 -translate-x-2 md:-translate-x-1/2 w-5 h-5 rounded-full bg-brand-cyan border-4 border-zinc-950 z-20 flex items-center justify-center">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-cyan/50 opacity-75"></span>
+                    </div>
+                    <div class="pl-12 md:pl-0 md:w-1/2 text-left md:even:text-right">
+                        <span class="text-[10px] font-bold uppercase bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 px-2 py-0.5 rounded">In Arbeit</span>
+                        <h4 class="text-sm font-bold text-white mt-1.5">Architektur & Pflichtenheft</h4>
+                        <p class="text-xs text-zinc-500 mt-1">Definition des Core-Schnittstellenmodells, des AES-Verschlüsselungsstandards und des Modul-Sandboxing-Konzepts.</p>
+                    </div>
+                    <div class="hidden md:block w-1/2"></div>
+                </div>
+
+                <!-- Step 2: Planned -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-12 md:even:flex-row-reverse">
+                    <!-- Timeline Dot -->
+                    <div class="absolute left-4 md:left-1/2 -translate-x-1.5 md:-translate-x-1/2 w-4 h-4 rounded-full bg-zinc-800 border-4 border-zinc-950 z-20"></div>
+                    <div class="pl-12 md:pl-0 md:w-1/2 text-left md:even:text-right">
+                        <span class="text-[10px] font-bold uppercase bg-zinc-900 text-zinc-500 px-2 py-0.5 rounded">Geplant</span>
+                        <h4 class="text-sm font-bold text-white mt-1.5">Docker-Infrastruktur</h4>
+                        <p class="text-xs text-zinc-500 mt-1">Entwicklung des Multi-Container-Stacks auf Basis von PostgreSQL und Valkey. Netzwerk-Splitting und Härtung des Deployments.</p>
+                    </div>
+                    <div class="hidden md:block w-1/2"></div>
+                </div>
+
+                <!-- Step 3: Planned -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-12 md:even:flex-row-reverse">
+                    <!-- Timeline Dot -->
+                    <div class="absolute left-4 md:left-1/2 -translate-x-1.5 md:-translate-x-1/2 w-4 h-4 rounded-full bg-zinc-800 border-4 border-zinc-950 z-20"></div>
+                    <div class="pl-12 md:pl-0 md:w-1/2 text-left md:even:text-right">
+                        <span class="text-[10px] font-bold uppercase bg-zinc-900 text-zinc-500 px-2 py-0.5 rounded">Geplant</span>
+                        <h4 class="text-sm font-bold text-white mt-1.5">OIDC Gate & Setup-Wizard</h4>
+                        <p class="text-xs text-zinc-500 mt-1">Implementierung des dynamic prefix basierten Hard-Gates und Entwicklung des validierten Erststart-Assistenten im Core.</p>
+                    </div>
+                    <div class="hidden md:block w-1/2"></div>
+                </div>
+
+                <!-- Step 4: Planned -->
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-12 md:even:flex-row-reverse">
+                    <!-- Timeline Dot -->
+                    <div class="absolute left-4 md:left-1/2 -translate-x-1.5 md:-translate-x-1/2 w-4 h-4 rounded-full bg-zinc-800 border-4 border-zinc-950 z-20"></div>
+                    <div class="pl-12 md:pl-0 md:w-1/2 text-left md:even:text-right">
+                        <span class="text-[10px] font-bold uppercase bg-zinc-900 text-zinc-500 px-2 py-0.5 rounded">Geplant</span>
+                        <h4 class="text-sm font-bold text-white mt-1.5">Modul Store & Sandbox-Engine</h4>
+                        <p class="text-xs text-zinc-500 mt-1">Anbindung der GitHub API für den One-Click-Download privater und öffentlicher Repositories sowie Härtung der Modul-Sandbox.</p>
+                    </div>
+                    <div class="hidden md:block w-1/2"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section (Accordion) -->
+    <section id="faq" class="py-24 border-t border-zinc-900 relative z-10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold text-brand-cyan uppercase tracking-wider">Häufig gestellte Fragen</span>
+                <h2 class="text-3xl font-bold text-white mt-2">Fragen zu ModuLab</h2>
+                <p class="text-zinc-400 text-sm mt-3">Alles, was du über die Lizenzierung, OIDC und die Installation wissen musst.</p>
+            </div>
+
+            <!-- Accordion Container -->
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <details class="group p-5 rounded-2xl glass-panel border border-zinc-800/80 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex items-center justify-between cursor-pointer focus:outline-none">
+                        <h3 class="text-sm font-bold text-white select-none">Warum wurde die AGPLv3-Lizenz gewählt?</h3>
+                        <span class="text-zinc-500 transition-transform group-open:rotate-180">▼</span>
+                    </summary>
+                    <p class="text-xs text-zinc-400 mt-3 leading-relaxed">
+                        Die AGPLv3 (GNU Affero General Public License v3) stellt sicher, dass der Quellcode des ModuLab-Cores für immer open-source und frei bleibt. Sie schützt das Projekt vor "SaaS-Trittbrettfahrern". Das bedeutet: Wer ModuLab modifiziert als gehosteten Netzwerk-Dienst (z. B. in der Cloud) anbietet, ist gesetzlich verpflichtet, seine Modifikationen ebenfalls als AGPLv3 offenzulegen.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 2 -->
+                <details class="group p-5 rounded-2xl glass-panel border border-zinc-800/80 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex items-center justify-between cursor-pointer focus:outline-none">
+                        <h3 class="text-sm font-bold text-white select-none">Welche Identity Provider (IdPs) werden unterstützt?</h3>
+                        <span class="text-zinc-500 transition-transform group-open:rotate-180">▼</span>
+                    </summary>
+                    <p class="text-xs text-zinc-400 mt-3 leading-relaxed">
+                        Da ModuLab vollständig auf dem standardisierten OpenID Connect (OIDC) Protokoll aufbaut, funktioniert es herstellerunabhängig mit jedem kompatiblen OIDC Identity Provider. Erfolgreich spezifiziert sind lokale Setups wie Authelia, Authentik, Keycloak und PocketID. Über standardisierte Claims werden Benutzername, Vorname, Nachname, E-Mail-Adresse und die Avatar-Bild-URL automatisch synchronisiert.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 3 -->
+                <details class="group p-5 rounded-2xl glass-panel border border-zinc-800/80 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex items-center justify-between cursor-pointer focus:outline-none">
+                        <h3 class="text-sm font-bold text-white select-none">Gibt es bereits fertige Module für den Start?</h3>
+                        <span class="text-zinc-500 transition-transform group-open:rotate-180">▼</span>
+                    </summary>
+                    <p class="text-xs text-zinc-400 mt-3 leading-relaxed">
+                        Ja! Im Core von ModuLab ist fest das offizielle Community-Repository verankert. Zur ersten Veröffentlichung werden die Module "App-Launcher" (zum bequemen Aufrufen deiner lokalen Docker-Dienste), "System-Status" (zur Live-Visualisierung von CPU, RAM und Festplattenspeicher über Valkey) sowie ein administrativer "GitHub-Repo-Manager" direkt bereitstehen.
+                    </p>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details class="group p-5 rounded-2xl glass-panel border border-zinc-800/80 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex items-center justify-between cursor-pointer focus:outline-none">
+                        <h3 class="text-sm font-bold text-white select-none">Kann ich ModuLab auch ohne Internetverbindung nutzen?</h3>
+                        <span class="text-zinc-500 transition-transform group-open:rotate-180">▼</span>
+                    </summary>
+                    <p class="text-xs text-zinc-400 mt-3 leading-relaxed">
+                        Absolut. Solange dein OIDC-Provider lokal erreichbar ist (z. B. auf deinem Server zu Hause), läuft das gesamte System vollständig offline. Die GitHub-API für den Modul Store ist das einzige Feature, das eine Internetverbindung benötigt, um neue Updates oder alternative Repositories abzufragen. Die installierten Module arbeiten danach komplett autark in deinem Intranet.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-zinc-950 py-12 relative z-10 text-center">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-sm text-zinc-500 mb-2">
+                ModuLab.app ist freie Software, lizenziert unter der <strong>AGPLv3</strong>.
+            </p>
+            <p class="text-xs text-zinc-600 mb-4">
+                E-Mail: <a href="mailto:project@modulab.app" class="text-brand-cyan hover:underline">project@modulab.app</a> | Organisation: <a href="https://github.com/modulab-project" target="_blank" class="text-brand-cyan hover:underline">github.com/modulab-project</a>
+            </p>
+            <p class="text-xs text-zinc-600">
+                &copy; 2026 ModuLab Project. Alle Rechte vorbehalten.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
